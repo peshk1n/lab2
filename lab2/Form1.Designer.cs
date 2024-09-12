@@ -63,6 +63,7 @@
             this.task2.TabIndex = 2;
             this.task2.Text = "Задание 2";
             this.task2.UseVisualStyleBackColor = true;
+            this.task2.Click += new System.EventHandler(this.task2_Click);
             // 
             // task3
             // 
