@@ -156,5 +156,11 @@ namespace lab2
             histogramPictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
             histogramPictureBox.Location = new Point(pictureBoxWidth * 3, 0);
         }
+
+        private void task3_Click(object sender, EventArgs e)
+        {
+            FormTask3 form = new FormTask3(image);
+            form.ShowDialog();
+        }
     }
 }
