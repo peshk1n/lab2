@@ -163,5 +163,11 @@ namespace lab2
             FormTask3 form = new FormTask3(image);
             form.ShowDialog();
         }
+
+        private void task1_Click(object sender, EventArgs e)
+        {
+            FormTask1 form = new FormTask1(image);
+            form.ShowDialog();
+        }
     }
 }

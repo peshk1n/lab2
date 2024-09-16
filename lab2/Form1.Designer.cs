@@ -37,7 +37,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(4, 16);
-            this.button1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button1.Margin = new System.Windows.Forms.Padding(1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(272, 28);
             this.button1.TabIndex = 0;
@@ -49,18 +49,19 @@
             // 
             this.task1.Enabled = false;
             this.task1.Location = new System.Drawing.Point(6, 47);
-            this.task1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.task1.Margin = new System.Windows.Forms.Padding(1);
             this.task1.Name = "task1";
             this.task1.Size = new System.Drawing.Size(88, 28);
             this.task1.TabIndex = 1;
             this.task1.Text = "Задание 1";
             this.task1.UseVisualStyleBackColor = true;
+            this.task1.Click += new System.EventHandler(this.task1_Click);
             // 
             // task2
             // 
             this.task2.Enabled = false;
             this.task2.Location = new System.Drawing.Point(97, 47);
-            this.task2.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.task2.Margin = new System.Windows.Forms.Padding(1);
             this.task2.Name = "task2";
             this.task2.Size = new System.Drawing.Size(88, 28);
             this.task2.TabIndex = 2;
@@ -72,7 +73,7 @@
             // 
             this.task3.Enabled = false;
             this.task3.Location = new System.Drawing.Point(188, 47);
-            this.task3.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.task3.Margin = new System.Windows.Forms.Padding(1);
             this.task3.Name = "task3";
             this.task3.Size = new System.Drawing.Size(88, 28);
             this.task3.TabIndex = 3;
@@ -90,7 +91,7 @@
             this.Controls.Add(this.task2);
             this.Controls.Add(this.task1);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
