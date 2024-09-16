@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -14,21 +15,24 @@ namespace lab2
 {
     public partial class FormTask3 : Form
     {
-        private Bitmap originalImage;
-
+        private float[,,] originalImage;
+        private float[,,] hsvImage;
 
         public FormTask3(System.Drawing.Image image)
         {
             InitializeComponent();
 
-            originalImage = new Bitmap(image);
+            Bitmap img = new Bitmap(image);
 
-            pictureBoxRGB.Image = originalImage;
-            pictureBoxHSV.Image = originalImage;
+            originalImage = ConvertRGBtoHSV(img);
+            hsvImage = ConvertRGBtoHSV(img);
 
-            trackBar1.Scroll += UpdateImage;
-            trackBar2.Scroll += UpdateImage;
-            trackBar3.Scroll += UpdateImage;
+            pictureBoxRGB.Image = image;
+            pictureBoxHSV.Image = image;
+
+            trackBar1.MouseUp += UpdateHue;
+            trackBar2.MouseUp += UpdateSaturation;
+            trackBar3.MouseUp += UpdateValue;
 
             this.Resize += new EventHandler(FormTask3_Resize);
 
@@ -42,11 +46,43 @@ namespace lab2
         }
 
 
+        float[,,] ConvertRGBtoHSV(Bitmap img)
+        {
+            float[,,] hsvImg = new float[img.Width, img.Height, 3];
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    Color pixel = img.GetPixel(i, j);
+                    float hue, saturation, value;
+                    RGBtoHSV(pixel, out hue, out saturation, out value);
+                    hsvImg[i, j, 0] = hue;
+                    hsvImg[i, j, 1] = saturation;
+                    hsvImg[i, j, 2] = value;
+                }
+            }
+            return hsvImg;
+        }
+
+        Bitmap ConvertHSVtoRGB(float[,,] hsvImg)
+        {
+            Bitmap rgbImg = new Bitmap(hsvImg.GetLength(0), hsvImg.GetLength(1));
+            for (int i = 0; i < hsvImg.GetLength(0); i++)
+            {
+                for (int j = 0; j < hsvImg.GetLength(1); j++)
+                {
+                    rgbImg.SetPixel(i, j, HSVtoRGB(hsvImg[i, j, 0],
+                        hsvImg[i, j, 1], hsvImg[i, j, 2]));
+                }
+            }
+            return rgbImg;
+        }
+
         private void LayoutControls()
         {
-            int pictureBoxX = button1.Right + 20; 
-            int pictureBoxWidth = this.ClientSize.Width - pictureBoxX - 20; 
-            int pictureBoxHeight = (this.ClientSize.Height - 40) / 2; 
+            int pictureBoxX = button1.Right + 20;
+            int pictureBoxWidth = this.ClientSize.Width - pictureBoxX - 20;
+            int pictureBoxHeight = (this.ClientSize.Height - 40) / 2;
 
             pictureBoxRGB.Location = new Point(pictureBoxX, 10);
             pictureBoxRGB.Size = new Size(pictureBoxWidth, pictureBoxHeight);
@@ -64,7 +100,7 @@ namespace lab2
 
             float max = Math.Max(r, Math.Max(g, b));
             float min = Math.Min(r, Math.Min(g, b));
-            value = max;  
+            value = max;
 
             float delta = max - min;
 
@@ -117,33 +153,60 @@ namespace lab2
         }
 
 
-        private void UpdateImage(object sender, EventArgs e)
+        private void UpdateHue(object sender, EventArgs e)
         {
-            float hueShift = trackBar1.Value; 
-            float saturationShift = trackBar2.Value / 100f; 
-            float valueShift = trackBar3.Value / 100f; 
+            float hueShift = trackBar1.Value;
 
-            Bitmap updatedImage = new Bitmap(originalImage.Width, originalImage.Height);
-
-            for (int i = 0; i < originalImage.Width; i++)
+            for (int i = 0; i < originalImage.GetLength(0); i++)
             {
-                for (int j = 0; j < originalImage.Height; j++)
+                for (int j = 0; j < originalImage.GetLength(1); j++)
                 {
-                    Color pixel = originalImage.GetPixel(i, j);
-                    float hue, saturation, value;
-
-                    RGBtoHSV(pixel, out hue, out saturation, out value);
-
+                    float hue = originalImage[i, j, 0];
                     hue = (hue + hueShift) % 360;
-                    saturation *= saturationShift;
-                    value *= valueShift;
 
-                    Color newPixel = HSVtoRGB(hue, saturation, value);
-                    updatedImage.SetPixel(i, j, newPixel);
+                    hsvImage[i, j, 0] = hue;
                 }
             }
 
-            pictureBoxHSV.Image = updatedImage; 
+            pictureBoxHSV.Image = ConvertHSVtoRGB(hsvImage);
+        }
+
+
+        private void UpdateSaturation(object sender, EventArgs e)
+        {
+            float saturationShift = trackBar2.Value / 100f;
+
+            for (int i = 0; i < originalImage.GetLength(0); i++)
+            {
+                for (int j = 0; j < originalImage.GetLength(1); j++)
+                {
+                    float saturation = originalImage[i, j, 1];
+                    saturation *= saturationShift;
+
+                    hsvImage[i, j, 1] = saturation;
+                }
+            }
+
+            pictureBoxHSV.Image = ConvertHSVtoRGB(hsvImage);
+        }
+
+
+        private void UpdateValue(object sender, EventArgs e)
+        {
+            float valueShift = trackBar3.Value / 100f;
+
+            for (int i = 0; i < originalImage.GetLength(0); i++)
+            {
+                for (int j = 0; j < originalImage.GetLength(1); j++)
+                {
+                    float value = originalImage[i, j, 2];
+                    value *= valueShift;
+
+                    hsvImage[i, j, 2] = value;
+                }
+            }
+
+            pictureBoxHSV.Image = ConvertHSVtoRGB(hsvImage);
         }
 
 
@@ -153,7 +216,7 @@ namespace lab2
             saveFileDialog.Filter = "Image Files|*.png;*.jpg;*.bmp";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Bitmap rgbImage = new Bitmap(pictureBoxHSV.Image);
+                Bitmap rgbImage = ConvertHSVtoRGB(hsvImage);
                 rgbImage.Save(saveFileDialog.FileName);
             }
         }
