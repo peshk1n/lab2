@@ -181,7 +181,7 @@ namespace lab2
                 for (int j = 0; j < originalImage.GetLength(1); j++)
                 {
                     float saturation = originalImage[i, j, 1];
-                    saturation *= saturationShift;
+                    saturation = Math.Max(0, Math.Min(saturation + saturationShift, 1));
 
                     hsvImage[i, j, 1] = saturation;
                 }
@@ -200,8 +200,7 @@ namespace lab2
                 for (int j = 0; j < originalImage.GetLength(1); j++)
                 {
                     float value = originalImage[i, j, 2];
-                    value *= valueShift;
-
+                    value = Math.Max(0, Math.Min(value + valueShift, 1)); 
                     hsvImage[i, j, 2] = value;
                 }
             }

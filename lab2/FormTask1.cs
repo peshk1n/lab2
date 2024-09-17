@@ -56,7 +56,7 @@ namespace lab2
                         Color color = bitmap.GetPixel(x, y);
                         double g1 = Math.Round(0.299 * color.R + 0.587 * color.G + 0.114 * color.B);
                         double g2 = Math.Round(0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B);
-                        int g3 = Math.Min(Math.Abs((int)(g1 - g2)) * 15, 255);
+                        int g3 = Math.Min(Math.Abs((int)(g1 - g2)) * 5, 255);
 
                         gray1.SetPixel(x, y, Color.FromArgb((int)g1, (int)g1, (int)g1));
                         gray2.SetPixel(x, y, Color.FromArgb((int)g2, (int)g2, (int)g2));
@@ -119,8 +119,8 @@ namespace lab2
                 {
                     int a = height - (int)(height * hist1[i] / (float)hist1.Max());
                     int b = height - (int)(height * hist2[i] / (float)hist2.Max());
-                    g.DrawLine(Pens.Red, i * 3, height, i * 3, a);
-                    g.DrawLine(Pens.Green, i * 3 + 1, height, i * 3 + 1, b);
+                    g.DrawLine(Pens.Red, i * 2, height, i * 2, a);
+                    g.DrawLine(Pens.Green, i * 2 + 1, height, i * 2 + 1, b);
                     
                 }
             }

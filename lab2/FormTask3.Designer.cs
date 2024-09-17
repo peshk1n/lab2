@@ -67,21 +67,21 @@
             // 
             this.trackBar2.Location = new System.Drawing.Point(180, 124);
             this.trackBar2.Maximum = 100;
+            this.trackBar2.Minimum = -100;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(145, 56);
             this.trackBar2.TabIndex = 2;
             this.trackBar2.TickFrequency = 10;
-            this.trackBar2.Value = 100;
             // 
             // trackBar3
             // 
             this.trackBar3.Location = new System.Drawing.Point(180, 186);
             this.trackBar3.Maximum = 100;
+            this.trackBar3.Minimum = -100;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Size = new System.Drawing.Size(145, 56);
             this.trackBar3.TabIndex = 3;
             this.trackBar3.TickFrequency = 10;
-            this.trackBar3.Value = 100;
             // 
             // label1
             // 
